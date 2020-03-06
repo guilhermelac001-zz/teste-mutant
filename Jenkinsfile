@@ -48,7 +48,7 @@ volumes: [
 
     stage('Application Deploy') {
         container('devops-toolbox'){
-            sh """cd ci
+            sh """cd CI/node-helm/
                   sed -i "s/latest/${gitCommit}/g" ${short_job_name}/${stack}-values.yaml
                   gcloud container clusters get-credentials ${stack} --zone us-central1-c --project ${env.PROJECT_ID}
                   helm upgrade --install ${short_job_name} --values ${short_job_name}/${stack}-values.yaml ${short_job_name} --debug
