@@ -38,7 +38,11 @@ volumes: [
     stage('Container Registry Push') {
         container('devops-toolbox') {
           withCredentials([file(credentialsId: 'GOOGLE_SERVICE_ACCOUNT', variable: 'GC_KEY')]) {
-            sh """gcloud auth activate-service-account --key-file ${GC_KEY};
+            sh """
+                  kubectl create serviceaccount --namespace kube-system tiller
+                  kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+                  kubectl patch deploy --namespace kube-system tiller-deploy --patch '{"spec": {"template": {"spec": {"serviceAccount": "tiller"} } } }'
+                  gcloud auth activate-service-account --key-file ${GC_KEY};
                   gcloud auth configure-docker --quiet
                   docker push gcr.io/${env.PROJECT_ID}/${job_name}:${gitCommit}
             """
