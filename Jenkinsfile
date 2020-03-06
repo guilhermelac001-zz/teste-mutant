@@ -49,7 +49,7 @@ volumes: [
     stage('Application Deploy') {
         container('devops-toolbox'){
             sh """cd CI/node-helm/node-chart
-                  helm init
+                  helm init --client-only
                   sed -i "s/latest/${gitCommit}/g" values.yaml
                   gcloud container clusters get-credentials cluster-1 --zone us-central1-c --project ${env.PROJECT_ID}          
                   helm upgrade --install node-chart --values values.yaml ${short_job_name} --debug
