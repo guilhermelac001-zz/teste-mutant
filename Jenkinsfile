@@ -53,7 +53,7 @@ volumes: [
                   sed -i "s/latest/${gitCommit}/g" values.yaml
                   gcloud container clusters get-credentials cluster-1 --zone us-central1-c --project ${env.PROJECT_ID}
                   cd ..          
-                  helm upgrade --install node-chart --values values.yaml node-chart --debug
+                  helm upgrade --install node-chart node-chart --debug
             """
         }
     }
