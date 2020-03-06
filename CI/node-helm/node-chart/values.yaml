@@ -1,5 +1,6 @@
 ## Deployment
 replicaCount: 1
+namespace: default
 
 image:
   repository: gcr.io/mutantproject/appnode
