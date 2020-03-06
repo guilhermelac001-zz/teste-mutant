@@ -5,7 +5,7 @@ String[] str;
 str = job_name.split('/'); //Full Job Name
 short_job_name = str[1].toLowerCase()
 stack = str[0].toLowerCase()
-env.PROJECT_ID = "$PROJECT_ID"
+env.PROJECT_ID = "mutantproject"
 
 println short_job_name
 println stack
