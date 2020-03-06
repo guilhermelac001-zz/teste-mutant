@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: gcr.io/mutantproject/appnode
-  tag: v4
+  tag: latest
   pullPolicy: Always
 
 resources: 
