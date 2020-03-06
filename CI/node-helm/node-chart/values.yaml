@@ -3,7 +3,7 @@ replicaCount: 1
 namespace: default
 
 image:
-  repository: gcr.io/mutantproject/appnode
+  repository: gcr.io/mutantproject/appnode/master
   tag: latest
   pullPolicy: Always
 

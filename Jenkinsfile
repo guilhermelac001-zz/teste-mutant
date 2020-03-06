@@ -50,7 +50,7 @@ volumes: [
         container('devops-toolbox'){
             sh """cd CI/node-helm/node-chart
                   helm init --client-only
-                  sed -i "s/latest/${job_name}/${gitCommit}/g" values.yaml
+                  sed -i "s/latest/${gitCommit}/g" values.yaml
                   gcloud container clusters get-credentials cluster-1 --zone us-central1-c --project ${env.PROJECT_ID}
                   cd ..          
                   helm upgrade --install node-chart node-chart --debug
