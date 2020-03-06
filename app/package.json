@@ -1,0 +1,14 @@
+{
+    "name": "Mutant",
+    "version": "1.0.0",
+    "description": "Mutant DevOps",
+    "main": "index.js",
+    "repository": "",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "express": "^4.16.2"
+    }
+}
+  

@@ -1,0 +1,39 @@
+## Deployment
+replicaCount: 1
+
+image:
+  repository: gcr.io/mutantproject/appnode
+  tag: v4
+  pullPolicy: Always
+
+resources: 
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+## Service
+service:
+  name: node-service
+  type: ClusterIP
+  port: 80
+  sec_port: 443  
+  
+
+
+## Ingress
+ingress:
+  enabled: false
+
+
+
+## Istio
+externalHost: dev.mutant.usetestf.info

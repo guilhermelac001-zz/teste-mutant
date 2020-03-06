@@ -1,0 +1,84 @@
+ master:
+  # Used for label app.kubernetes.io/component
+   componentName: "jenkins-master"
+   image: "jenkins/jenkins"
+   tag: "lts"
+   imagePullPolicy: "Always"
+   numExecutors: 10
+   authorizationStrategy: |-
+      <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
+        <denyAnonymousReadAccess>true</denyAnonymousReadAccess>
+      </authorizationStrategy>
+   adminUser: "admin"
+   adminPassword: jenkins-digital
+   resources:
+     requests:
+        cpu: "500m"
+        memory: "512Mi"
+     limits:
+        cpu: "2000m"
+        memory: "4096Mi"
+   # javaOpts: "-Xms512m -Xmx512m"
+   #jenkinsOpts: "-Dhudson.model.DirectoryBrowserSupport.CSP=\"sandbox allow-same-origin allow-scripts; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self'; style-src 'self' 'unsafe-inline'; font-src *;\""
+   usePodSecurityContext: true
+   servicePort: 8080
+   targetPort: 8080
+   serviceType: NodePort
+   healthProbes: true
+   healthProbesLivenessTimeout: 5
+   healthProbesReadinessTimeout: 5
+   healthProbeLivenessPeriodSeconds: 10
+   healthProbeReadinessPeriodSeconds: 10
+   healthProbeLivenessFailureThreshold: 5
+   healthProbeReadinessFailureThreshold: 3
+   healthProbeLivenessInitialDelay: 90
+   healthProbeReadinessInitialDelay: 60
+   slaveListenerPort: 50000
+   slaveHostPort:
+   disabledAgentProtocols:
+     - JNLP-connect
+     - JNLP2-connect
+   csrf:
+     defaultCrumbIssuer:
+       enabled: true
+       proxyCompatability: true
+   cli: false
+   installPlugins:
+    - kubernetes:1.20.0
+    - workflow-job:2.35
+    - workflow-aggregator:2.6
+    - credentials-binding:1.20
+    - git:3.12.1
+    - bitbucket:1.1.11
+    - blueocean:1.19.0
+    - reverse-proxy-auth-plugin:1.6.3
+    - role-strategy:2.15
+    - matrix-auth:2.5
+    - authorize-project:1.3.0
+    - prometheus:2.0.6
+
+---
+ingress:
+    enabled: false
+
+agent:
+  enabled: true
+  image: "jenkins/jnlp-slave"
+  imageTag: "3.27-1"
+  customJenkinsLabels: []
+  # name of the secret to be used for image pulling
+  imagePullSecretName:
+  componentName: "jenkins-slave"
+  privileged: false
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+  alwaysPullImage: true
+  podRetention: "Never"
+
+rbac:
+  create: true
