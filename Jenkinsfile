@@ -3,7 +3,7 @@ def label = "worker-${UUID.randomUUID().toString()}"
 // Environment Variables
 String[] str;
 str = job_name.split('/'); //Full Job Name
-short_job_name = str[1].toLowerCase()
+short_job_name = "appnode"
 stack = str[0].toLowerCase()
 env.PROJECT_ID = "mutantproject"
 
