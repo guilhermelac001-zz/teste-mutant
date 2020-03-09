@@ -29,8 +29,8 @@ volumes: [
     stage('Container Build') {
         container('devops-toolbox') {
             sh """
-                  docker build -t ${short_job_name} .
-                  docker tag ${short_job_name}:latest gcr.io/${env.PROJECT_ID}/${job_name}:${gitCommit}
+                  docker build -t gcr.io/${env.PROJECT_ID}/${short_job_name}:${gitCommit} .
+                  
             """
         }
     }
