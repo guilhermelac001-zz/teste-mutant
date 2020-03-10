@@ -2,13 +2,18 @@
  export CLUSTER=cluster-2
  export ZONE=us-east4-a	
 
-# ##create cluster
+#create cluster
 
 gcloud beta container --project $PROJECT clusters create $CLUSTER --zone $ZONE --num-nodes 3 -m n1-standard-2
 
 gcloud container clusters get-credentials $CLUSTER --zone $ZONE --project $PROJECT
 
-##install helm
+#build app image and send to GCR
+
+docker build -t gcr.io/$PROJECT/appnode:latest
+docker push gcr.io/$PROJECT/appnode:latest
+
+#install helm
 
 curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
 
@@ -20,7 +25,7 @@ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admi
 
 kubectl patch deploy --namespace kube-system tiller-deploy --patch '{"spec": {"template": {"spec": {"serviceAccount": "tiller"} } } }'
 
-##install istio
+#install istio
 
 curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.5.0 sh -
 

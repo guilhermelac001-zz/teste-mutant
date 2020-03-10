@@ -23,7 +23,7 @@ Abaixo segue um diagrama das ferramentas utilizadas e os passos a serem seguidos
 
 __Observação: Para instalar todos os componentes automaticamente, criei um script chamado install.sh.__
 
-__Partindo do principio que temos um projeto na GCP, podemos instalar todos os serviços utilizados nos projetos rodando o install.sh, sobrando apenas algumas configurações manuais como configurar DNS e as credenciais necessarias para o jenkins fazer alterações no cluster.__
+__Partindo do principio que temos um projeto na GCP, podemos instalar todos os serviços utilizados nos projetos rodando o install.sh, sobrando apenas algumas configurações manuais para serem realizadas, por exemplo, configurar DNS e as credenciais necessarias para o jenkins fazer alterações no cluster.__
 
 ## 1. Transformando a aplicação em uma imagem Docker
 
@@ -31,7 +31,7 @@ Configure o Docker para usar os repositórios oficiais de imagens do docker do G
 
     gcloud auth configure-docker
 
-Dentro da pasta raiz deste repositório, temos um Dockerfile que será o Dockerfile utilizado para criar a imagem. Portanto, para criar a imagem e envia-la ao registry basta utilizar os dois seguintes comandos: 
+Dentro da pasta raiz deste repositório, temos um Dockerfile que será o Dockerfile utilizado para criar a imagem da aplicação. Portanto, para criar a imagem e envia-la ao registry basta utilizar os dois seguintes comandos: 
 
     docker build -t gcr.io/$PROJECT_ID/$image_name:latest
     docker push gcr.io/$PROJECT_ID/$image_name:latest
