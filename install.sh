@@ -10,7 +10,7 @@ gcloud container clusters get-credentials $CLUSTER --zone $ZONE --project $PROJE
 
 #build app image and send to GCR
 
-docker build -t gcr.io/$PROJECT/appnode:latest
+docker build -t gcr.io/$PROJECT/appnode:latest .
 docker push gcr.io/$PROJECT/appnode:latest
 
 #install helm
@@ -83,3 +83,4 @@ sh install_jenkins_gke.sh
 
 # helm install stable/grafana --name grafana --namespace istio-system
 
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &

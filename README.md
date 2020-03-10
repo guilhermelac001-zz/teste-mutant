@@ -33,7 +33,7 @@ Configure o Docker para usar os repositórios oficiais de imagens do docker do G
 
 Dentro da pasta raiz deste repositório, temos um Dockerfile que será o Dockerfile utilizado para criar a imagem da aplicação. Portanto, para criar a imagem e envia-la ao registry basta utilizar os dois seguintes comandos: 
 
-    docker build -t gcr.io/$PROJECT_ID/$image_name:latest
+    docker build -t gcr.io/$PROJECT_ID/$image_name:latest .
     docker push gcr.io/$PROJECT_ID/$image_name:latest
 
 
@@ -110,7 +110,9 @@ Antes de instalar o Jenkis, iremos mandar uma imagem para o registry chamada dev
 
     docker biuld -t gcr.io/$PROJECT/devops-toolbox:latest
 
-Dentro deste repositório, na pasta raiz, temos um arquivo chamado _install_jenkins_gke.sh_. Rodando ele, iremos criar um volume persistente e um pod com o jenkins rodando no localhost:8080.
+Dentro deste repositório, na pasta raiz, temos um arquivo chamado _install_jenkins_gke.sh_. Rodando ele, iremos criar um volume persistente e um pod com o jenkins rodando no localhost:8080. O jenkins pode ser acessado utilizando o port forward: 
+
+    kubectl -n jenkins port-forward service/jenkins 8080:8080
 
 Uma vez com o jenkins rodando no cluster, será necessario criar uma _service account_ para o jenkins para que ele tenha acesso aos recursos do cluster de kubernetes. Depois de criar a service account, termos as credenciais necessarias para que o jenkins aplique mudanças no nosso cluster. 
 
@@ -122,6 +124,10 @@ Para utilizar o grafana como ferramenta de monitoramento, iremos primeiro instal
 
     helm install stable/grafana --name grafana --namespace istio-system
 
-Por fim teremos o grafana instalado e rodando no localhost:3000. Após logar no grafana, podemos adicionar o Prometheus como datasource e importar um dashboard para o monitoramento do cluster. 
+Por fim teremos o grafana instalado e pode ser acessado no localhost:3000 utilizando o comando de port forward:
 
-__observação:Algumas versões do istio instalam automaticamente o prometheus e o grafana, tornando desnecessario este passo__
+    kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &  
+
+Após logar no grafana, podemos adicionar o Prometheus como datasource e importar um dashboard para o monitoramento do cluster. 
+
+__observação:Algumas versões do istio instalam automaticamente o prometheus e o grafana, tornando este passo uma escolha de instalação manual__
